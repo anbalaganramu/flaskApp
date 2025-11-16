@@ -91,29 +91,29 @@ pipeline {
             }
         }
 
-        // stage('Verify Deployment') {
-        //     steps {
-        //         script {
-        //             sshagent(['flaskApp']) {
-        //                 echo 'Waiting for Flask app to start and verifying access...'
-        //                 // Give the container a moment to start up
-        //                 sh """
-        //                     ssh -o StrictHostKeyChecking=no ${SLAVE_SERVER} '
-        //                         sleep 10
-        //                         # Check if the container is running
-        //                         if [ \$(docker ps --filter "name=${APP_NAME}" --format "{{.Names}}") != "${APP_NAME}" ]; then
-        //                             echo "Error: Container ${APP_NAME} is not running."
-        //                             docker ps -a # Show all containers for debugging
-        //                             exit 1
-        //                         fi
-        //                         # Optionally, check if the port is listening inside the container
-        //                         docker exec ${APP_NAME} netstat -tuln | grep :${APP_PORT} || echo "Warning: Port ${APP_PORT} might not be listening inside the container."
-        //                     '
-        //                 """
-        //             }
-        //         }
-        //     }
-        // }
+        stage('Verify Deployment') {
+            steps {
+                script {
+                    sshagent(['flaskApp']) {
+                        echo 'Waiting for Flask app to start and verifying access...'
+                        // Give the container a moment to start up
+                        sh """
+                            ssh -o StrictHostKeyChecking=no ${SLAVE_SERVER} '
+                                sleep 10
+                                # Check if the container is running
+                                if [ \$(docker ps --filter "name=${APP_NAME}" --format "{{.Names}}") != "${APP_NAME}" ]; then
+                                    echo "Error: Container ${APP_NAME} is not running."
+                                    docker ps -a # Show all containers for debugging
+                                    exit 1
+                                fi
+                                # Optionally, check if the port is listening inside the container
+                                docker exec ${APP_NAME} netstat -tuln | grep :${APP_PORT} || echo "Warning: Port ${APP_PORT} might not be listening inside the container."
+                            '
+                        """
+                    }
+                }
+            }
+        }
     }
 
     post {
