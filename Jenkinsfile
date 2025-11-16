@@ -118,7 +118,7 @@ pipeline {
 
     post {
         always {
-            echo "Pipeline finished. Check the Slave machine's public IP on port ${params.HOST_PORT} for the Flask app."
+            echo "Pipeline finished. Check the Slave machine's public IP on port ${env.HOST_PORT} for the Flask app."
             // Optional: Add a step to print the slave's IP address if needed
             // sh "echo 'Slave IP: 172.31.2.97'" // Hardcoded, get dynamically if needed
         }
