@@ -56,40 +56,40 @@ pipeline {
             }
         }
 
-        // stage('Stop Previous Container (if any)') {
-        //     steps {
-        //         script {
-        //             sshagent(['flaskApp']) {
-        //                 echo 'Checking for and stopping any previous container...'
-        //                 // Attempt to stop and remove a container with the same name, ignore errors if none exists
-        //                 sh """
-        //                     ssh -o StrictHostKeyChecking=no ${SLAVE_SERVER} '
-        //                         docker stop ${APP_NAME} || true
-        //                         docker rm ${APP_NAME} || true
-        //                     '
-        //                 """
-        //             }
-        //         }
-        //     }
-        // }
+        stage('Stop Previous Container (if any)') {
+            steps {
+                script {
+                    sshagent(['flaskApp']) {
+                        echo 'Checking for and stopping any previous container...'
+                        // Attempt to stop and remove a container with the same name, ignore errors if none exists
+                        sh """
+                            ssh -o StrictHostKeyChecking=no ${SLAVE_SERVER} '
+                                docker stop ${APP_NAME} || true
+                                docker rm ${APP_NAME} || true
+                            '
+                        """
+                    }
+                }
+            }
+        }
 
-        // stage('Run Flask App Container on Slave') {
-        //     steps {
-        //         script {
-        //             sshagent(['flaskApp']) {
-        //                 echo 'Running Flask App container on Slave...'
-        //                 // Run the built image, mapping the internal port (APP_PORT) to the host port (HOST_PORT)
-        //                 // Use --rm to automatically remove the container when it stops
-        //                 // Use -d to run in detached mode
-        //                 sh """
-        //                     ssh -o StrictHostKeyChecking=no ${SLAVE_SERVER} '
-        //                         docker run -d --rm --name ${APP_NAME} -p ${HOST_PORT}:${APP_PORT} ${APP_NAME}
-        //                     '
-        //                 """
-        //             }
-        //         }
-        //     }
-        // }
+        stage('Run Flask App Container on Slave') {
+            steps {
+                script {
+                    sshagent(['flaskApp']) {
+                        echo 'Running Flask App container on Slave...'
+                        // Run the built image, mapping the internal port (APP_PORT) to the host port (HOST_PORT)
+                        // Use --rm to automatically remove the container when it stops
+                        // Use -d to run in detached mode
+                        sh """
+                            ssh -o StrictHostKeyChecking=no ${SLAVE_SERVER} '
+                                docker run -d --rm --name ${APP_NAME} -p ${HOST_PORT}:${APP_PORT} ${APP_NAME}
+                            '
+                        """
+                    }
+                }
+            }
+        }
 
         // stage('Verify Deployment') {
         //     steps {
