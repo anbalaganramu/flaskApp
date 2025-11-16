@@ -32,29 +32,29 @@ pipeline {
             }
         }
 
-        // stage('Build Docker Image on Slave') {
-        //     steps {
-        //         script {
-        //             sshagent(['flaskApp']) {
-        //                 echo 'Building Docker image on Slave...'
+        stage('Build Docker Image on Slave') {
+            steps {
+                script {
+                    sshagent(['flaskApp']) {
+                        echo 'Building Docker image on Slave...'
 
-        //                 // Step 2: Navigate to the cloned repo and build the Docker image
-        //                 sh """
-        //                     ssh -o StrictHostKeyChecking=no ${SLAVE_SERVER} '
-        //                         cd ${APP_NAME}
-        //                         # Ensure Dockerfile exists
-        //                         if [ ! -f Dockerfile ]; then
-        //                             echo "Error: Dockerfile not found in the cloned repository."
-        //                             exit 1
-        //                         fi
-        //                         # Build the image with a tag
-        //                         docker build -t ${APP_NAME} .
-        //                     '
-        //                 """
-        //             }
-        //         }
-        //     }
-        // }
+                        // Step 2: Navigate to the cloned repo and build the Docker image
+                        sh """
+                            ssh -o StrictHostKeyChecking=no ${SLAVE_SERVER} '
+                                cd ${APP_NAME}
+                                # Ensure Dockerfile exists
+                                if [ ! -f Dockerfile ]; then
+                                    echo "Error: Dockerfile not found in the cloned repository."
+                                    exit 1
+                                fi
+                                # Build the image with a tag
+                                docker build -t ${APP_NAME} .
+                            '
+                        """
+                    }
+                }
+            }
+        }
 
         // stage('Stop Previous Container (if any)') {
         //     steps {
