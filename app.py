@@ -3,6 +3,10 @@ import requests
 
 app = Flask(__name__)
 
+# --- Health Check Endpoint ---
+@app.route('/health')
+def health_check():
+
 @app.route('/<username>')
 def get_user_gists(username):
     try:
