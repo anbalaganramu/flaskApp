@@ -12,7 +12,7 @@ pipeline {
     }
 
     stages {
-        stage('Clone Repository on Slave') {
+        stage('Clone Repository on Slave Machine') {
             steps {
                 script {
                     sshagent(['flaskApp']) { // Use the SSH credential ID you configured
